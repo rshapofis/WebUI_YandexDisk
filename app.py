@@ -54,7 +54,7 @@ def login() -> flask.Response:
             templateEnv = jinja2.Environment(loader=templateLoader)
             login_template = "login.html"
             template = templateEnv.get_template(login_template)
-            return template.render()
+            return template.render(flask=flask)
 
 # метод для выхода из авторизации, убирает токен из сессии
 @app.route('/logout')
