@@ -7,7 +7,48 @@
 </head>
 <body>
 <div class="container">
+  <button class="but logbtn" onclick="location='/logout'">logout</button>
   <h1>Files {{path}}</h1>
+  <hr>
+  <div style="display:flex;justify-content: space-evenly;">
+    <form method="POST" action="/setFilter">
+      <table>
+        <tr>
+          <td>
+          <select name="filter" id="types-select">
+            <option value="все">все</option>
+            <option value="текст" {{ "selected" if filter=="текст"  }}>текст</option>
+            <option value="видео" {{ "selected" if filter=="видео"  }}>видео</option>
+            <option value="изображение" {{ "selected" if filter=="изображение"  }}>изображение</option>
+            <option value="аудио" {{ "selected" if filter=="аудио"  }}>аудио</option>
+            <option value="приложение" {{ "selected" if filter=="приложение"  }}>приложение</option>
+          </select>
+          </td>
+          <td>
+          <button type="submit" class="but filtbtn">Filter</button>
+          </td>
+          </tr>
+        </table>
+    </form>
+    <form method="POST" action="/popFilter">
+      <table>
+        <tr>
+          <td>
+            <button type="submit" class="but filtbtn">Reset filter</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+    <form method="POST" action="/refresh">
+      <table>
+        <tr>
+          <td>
+            <button type="submit" class="but filtbtn">Refresh</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+    </div>
   <hr>
   <table width="100%">
     {% if path!="/" %}
@@ -15,7 +56,7 @@
     <td colspan="2">
     <form method="POST">
       <input type="text" name="path" id="path" style="display:none;" value="'{{ uppath }}'" >
-      <button type="submit" class="fbtn">...</button>
+      <button type="submit" class="but fbtn">...</button>
     </form>
     </td>
   <tr>
@@ -26,7 +67,7 @@
   <td colspan="2">
   <form method="POST">
     <input type="text"  name="path" id="path" style="display:none;" value="'{{ i[2] }}'" >
-    <button type="submit" class="fbtn">
+    <button type="submit" class="but fbtn">
       <span>
         <img src="{{ flask.url_for('static', filename = 'img/dir.png') }}" width="20px"/> {{ i[0] }}
       </span>
@@ -34,17 +75,19 @@
   </form>
   </td>
   {% else %}
-  <td>
-  <form method="POST">
-    <button type="submit" class="fbtn" disabled>{{ i[0] }}</button>
-  </form>
-  </td>
-  <td width="10%">
-    <form method="POST" target="_blank" action="/download">
-      <input type="text" name="path" id="path" style="display:none;" value="'{{ i[2] }}'" >
-      <button type="submit" class="fbtn">Загрузить</button>
+    {% if types[filter] in i[3] %}
+    <td>
+    <form method="POST">
+      <button type="submit" class="but fbtn" disabled>{{ i[0] }}</button>
     </form>
-  </td>
+    </td>
+    <td width="10%">
+      <form method="POST" target="_blank" action="/download">
+        <input type="text" name="path" id="path" style="display:none;" value="'{{ i[2] }}'" >
+        <button type="submit" class="but fbtn">Download</button>
+      </form>
+    </td>
+    {% endif %}
   {% endif %}
   </tr>
   {% endfor %}
