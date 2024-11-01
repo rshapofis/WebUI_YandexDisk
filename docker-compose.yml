@@ -1,13 +1,24 @@
 services:
     memcached:
-        image: memcached
+        build: flaskdocker/memcached
         command:
           - --conn-limit=1024
           - --memory-limit=64
           - --threads=4
+        healthcheck:
+          test: ["CMD", "/bin/nc","-z","127.0.0.1","11211"]
+          interval: 10s
+          retries: 5
+          start_period: 30s
+          timeout: 10s
+
     flask_web:
         container_name: flask_web_container
-        build: flaskdocker/
+        build: flaskdocker/python
+        depends_on:
+            memcached:
+                condition: service_healthy
+                restart: true
         ports:
             - "5000:5000"
         restart: unless-stopped
