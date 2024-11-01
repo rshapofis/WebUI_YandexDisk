@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{{ flask.url_for('static', filename = 'css/styles.css') }}">
+</head>
+<body>
+
+<form method="POST" action = "/login">
+  <div class="container">
+    <h1>Login</h1>
+    <p>Please fill in this form to enter.</p>
+    <hr>
+
+    <label for="token"><b>Token</b></label>
+    <input type="text" placeholder="Enter token" name="token" id="token" required>
+    <button type="submit" class="but logbtn">Submit</button>
+  </div>
+  
+</form>
+
+</body>
+</html>
