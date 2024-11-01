@@ -1,0 +1,13 @@
+services:
+    memcached:
+        image: memcached
+        command:
+          - --conn-limit=1024
+          - --memory-limit=64
+          - --threads=4
+    flask_web:
+        container_name: flask_web_container
+        build: flaskdocker/
+        ports:
+            - "5000:5000"
+        restart: unless-stopped
